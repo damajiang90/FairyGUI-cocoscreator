@@ -7,7 +7,7 @@ export class TweenManager {
     public static createTween(): GTweener {
         if (!_root) {
             _root = new Node("[TweenManager]");
-            game.addPersistRootNode(_root);
+            director.addPersistRootNode(_root);
             director.getScheduler().schedule(TweenManager.update, _root, 0, macro.REPEAT_FOREVER, 0, false);
         }
 

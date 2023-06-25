@@ -1,11 +1,11 @@
-import { director, game, macro, Node } from "cc";
+import { director, macro, Node } from "cc";
 import { Pool } from "../utils/Pool";
 import { GTweener } from "./GTweener";
 export class TweenManager {
     static createTween() {
         if (!_root) {
             _root = new Node("[TweenManager]");
-            game.addPersistRootNode(_root);
+            director.addPersistRootNode(_root);
             director.getScheduler().schedule(TweenManager.update, _root, 0, macro.REPEAT_FOREVER, 0, false);
         }
         var tweener = _tweenerPool.borrow();
