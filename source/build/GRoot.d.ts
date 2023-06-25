@@ -1,4 +1,4 @@
-import { Vec2, AudioClip } from "cc";
+import { Vec2, AudioClip, Canvas } from "cc";
 import { InputProcessor } from "./event/InputProcessor";
 import { PopupDirection } from "./FieldTypes";
 import { GComponent } from "./GComponent";
@@ -18,7 +18,7 @@ export declare class GRoot extends GComponent {
     private audioEngine;
     private static _inst;
     static get inst(): GRoot;
-    static create(): GRoot;
+    static create(canvas?: Canvas): GRoot;
     constructor();
     protected onDestroy(): void;
     getTouchPosition(touchId?: number): Vec2;

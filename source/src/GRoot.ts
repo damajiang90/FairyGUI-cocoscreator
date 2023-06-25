@@ -1,4 +1,4 @@
-import { director, Color, view, Vec2, AudioClip, View, AudioSourceComponent, Event, Node } from "cc";
+import { director, Color, view, Vec2, AudioClip, View, AudioSourceComponent, Event, Node, Canvas } from "cc";
 import { EDITOR } from "cc/env";
 import { InputProcessor } from "./event/InputProcessor";
 import { RelationType, PopupDirection } from "./FieldTypes";
@@ -32,9 +32,12 @@ export class GRoot extends GComponent {
         return GRoot._inst;
     }
 
-    public static create(): GRoot {
+    public static create(canvas:Canvas = undefined): GRoot {
         GRoot._inst = new GRoot();
-        director.getScene().getChildByName('Canvas').addChild(GRoot._inst.node);
+        if(!canvas){
+            canvas = director.getScene().getChildByName('Canvas').getComponent(Canvas);
+        }
+        canvas.node.addChild(GRoot._inst.node);
         GRoot._inst.onWinResize();
 
         return GRoot._inst;

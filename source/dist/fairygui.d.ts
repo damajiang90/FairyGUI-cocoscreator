@@ -387,7 +387,7 @@ declare module 'fgui/GMovieClip' {
 }
 
 declare module 'fgui/GRoot' {
-    import { Vec2, AudioClip } from "cc";
+    import { Vec2, AudioClip, Canvas } from "cc";
     import { InputProcessor } from "fgui/event/InputProcessor";
     import { PopupDirection } from "fgui/FieldTypes";
     import { GComponent } from "fgui/GComponent";
@@ -396,7 +396,7 @@ declare module 'fgui/GRoot' {
     import { Window } from "fgui/Window";
     export class GRoot extends GComponent {
         static get inst(): GRoot;
-        static create(): GRoot;
+        static create(canvas?: Canvas): GRoot;
         constructor();
         protected onDestroy(): void;
         getTouchPosition(touchId?: number): Vec2;
