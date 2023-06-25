@@ -177,8 +177,7 @@ export class GLoader3D extends GObject {
             this.setDragonBones(this._contentItem.asset, this._contentItem.atlasAsset, this._contentItem.skeletonAnchor);
     }
     setSpine(asset, anchor, pma) {
-        this.url = null;
-        this.clearContent();
+        this.freeSpine();
         let node = new Node();
         this._container.addChild(node);
         node.layer = UIConfig.defaultUILayer;
@@ -190,9 +189,13 @@ export class GLoader3D extends GObject {
         this.onChangeSpine();
         this.updateLayout();
     }
+    freeSpine() {
+        if (this._content) {
+            this._content.destroy();
+        }
+    }
     setDragonBones(asset, atlasAsset, anchor, pma) {
-        this.url = null;
-        this.clearContent();
+        this.freeDragonBones();
         let node = new Node();
         node.layer = UIConfig.defaultUILayer;
         this._container.addChild(node);
@@ -208,18 +211,31 @@ export class GLoader3D extends GObject {
         this.onChangeDragonBones();
         this.updateLayout();
     }
+    freeDragonBones() {
+        if (this._content) {
+            this._content.destroy();
+        }
+    }
     onChange() {
-        this.onChangeSpine();
-        this.onChangeDragonBones();
+        if (this._contentItem == null)
+            return;
+        if (this._contentItem.type == PackageItemType.Spine) {
+            this.onChangeSpine();
+        }
+        if (this._contentItem.type == PackageItemType.DragonBones) {
+            this.onChangeDragonBones();
+        }
     }
     onChangeSpine() {
         if (!(this._content instanceof sp.Skeleton))
             return;
         if (this._animationName) {
-            let trackEntry = this._content.getCurrent(0);
+            let state = this._content['_state'];
+            let trackEntry = state.getCurrent(0);
             if (!trackEntry || trackEntry.animation.name != this._animationName || trackEntry.isComplete() && !trackEntry.loop) {
                 this._content.animation = this._animationName;
-                trackEntry = this._content.setAnimation(0, this._animationName, this._loop);
+                this._content.setAnimation(0, this._animationName, this._loop);
+                trackEntry = state.getCurrent(0);
             }
             if (this._playing)
                 this._content.paused = false;
@@ -231,7 +247,8 @@ export class GLoader3D extends GObject {
         else
             this._content.clearTrack(0);
         let skin = this._skinName || this._content.skeletonData.getRuntimeData().skins[0].name;
-        if (this._content["_skeleton"].skin != skin)
+        let cSkin = this._content['_skeleton'].skin;
+        if (cSkin != null && cSkin.name != skin)
             this._content.setSkin(skin);
     }
     onChangeDragonBones() {

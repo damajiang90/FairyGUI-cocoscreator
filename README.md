@@ -21,7 +21,10 @@ Official website: [www.fairygui.com](https://www.fairygui.com)
 * bin/fairygui.d.ts
 
 # 编译源码
-使用VSC打开source目录,执行gulp build任务.
+npm install gulp -g  安装gulp
+在source目录下执行:npm install rollup --save-dev  本地安装rollup
+在source目录下执行:npm install 安装
+在source目录下执行:gulp build.
 
 # License
 MIT

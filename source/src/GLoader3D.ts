@@ -1,4 +1,5 @@
 import { sp, dragonBones, assetManager, Color, isValid, resources, Vec2, Node, UITransform, Asset, math } from "cc";
+import spine from "../lib/spine-core";
 import { AlignType, LoaderFillType, ObjectPropID, PackageItemType, VertAlignType } from "./FieldTypes";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
@@ -309,12 +310,13 @@ export class GLoader3D extends GObject {
             return;
 
         if (this._animationName) {
-            let trackEntry = this._content.getCurrent(0);
+            let state = this._content['_state'] as spine.AnimationState;
+            let trackEntry = state.getCurrent(0);
             if (!trackEntry || trackEntry.animation.name != this._animationName || trackEntry.isComplete() && !trackEntry.loop) {
                 this._content.animation = this._animationName;
-                trackEntry = this._content.setAnimation(0, this._animationName, this._loop);
+                this._content.setAnimation(0, this._animationName, this._loop);
+                trackEntry = state.getCurrent(0);
             }
-
             if (this._playing)
                 this._content.paused = false;
             else {
@@ -326,7 +328,8 @@ export class GLoader3D extends GObject {
             this._content.clearTrack(0);
 
         let skin = this._skinName || this._content.skeletonData.getRuntimeData().skins[0].name;
-        if (this._content["_skeleton"].skin != skin)
+        let cSkin = this._content['_skeleton'].skin;
+        if (cSkin != null && cSkin.name != skin)
             this._content.setSkin(skin);
     }
 

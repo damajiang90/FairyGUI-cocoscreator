@@ -1,12 +1,12 @@
 {
-  "name": "fairygui-cc",
+  "name": "fgui",
   "version": "1.1.1",
   "description": "A GUI Editor & framework for cocos creator",
   "main": "dist/fairygui.mjs",
   "types": "dist/fairygui.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fairygui/FairyGUI-cocoscreator"
+    "url": "git+https://github.com/fairygui/FairyGUI-cocoscreator.git"
   },
   "files": [
     "dist/fairygui.mjs",
@@ -31,6 +31,16 @@
     "gulp": "^4.0.2",
     "gulp-rename": "^2.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
-    "gulp-uglify-es": "^2.0.0"
-  }
+    "gulp-uglify-es": "^2.0.0",
+    "rollup": "^3.25.2"
+  },
+  "bugs": {
+    "url": "https://github.com/fairygui/FairyGUI-cocoscreator/issues"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [
+    "fgui"
+  ]
 }

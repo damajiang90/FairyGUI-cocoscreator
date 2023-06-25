@@ -27,7 +27,8 @@ gulp.task("rollup", async function () {
             format: 'esm',
             extend: true,
             name: 'fgui',
-        }
+        },
+        file:'dist/fairygui.mjs',//这里调试源码发现从config里直接获取的.file,不清楚是不是版本问题
     };
     const subTask = await rollup.rollup(config);
     await subTask.write(config);
@@ -42,7 +43,7 @@ gulp.task("uglify", function () {
 
 gulp.task('buildDts', function () {
     return new Promise(function (resolve, reject) {
-        dts.bundle({ name: "fairygui-cc", main: "./build/FairyGUI.d.ts", out: "../dist/fairygui.d.ts" });
+        dts.bundle({ name: "fgui", main: "./build/FairyGUI.d.ts", out: "../dist/fairygui.d.ts" });
         resolve();
     });
 })
