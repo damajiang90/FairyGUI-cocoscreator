@@ -736,7 +736,7 @@ declare module 'fgui/GComponent' {
             constructor();
             dispose(): void;
             get displayListContainer(): Node;
-            protected _childrenUserClassMap: Record<string, Constructor<GComponent>>;
+            protected _childUserClassMap: Record<string, Constructor<GComponent>>;
             /**
                 * 需在构造函数内注册指定子组件需要自定义实现类
                 * @param childName 指定定子组件名
@@ -744,14 +744,14 @@ declare module 'fgui/GComponent' {
                 */
             registerChildUserClass<T extends GComponent>(childName: string, userClass: Constructor<T>): void;
             getChildUserClass(key: string): Constructor<GComponent>;
-            protected _childrenListItemUserClassMap: Record<string, Constructor<GComponent>>;
+            protected _childListItemUserClassMap: Record<string, Constructor<GComponent>>;
             /**
                 * 需在构造函数内注册指定子列表生成item需要自定义实现类
                 * @param childListName 指定定子列表名
                 * @param userClass 自定义实现类，应是GComponent子类
                 */
-            registerChildListItemUserClass<T extends GComponent>(childListName: string, userClass: Constructor<T>): void;
-            getChildListItemUserClass(key: string): Constructor<GComponent>;
+            registerListItemUserClass<T extends GComponent>(childListName: string, userClass: Constructor<T>): void;
+            getListItemUserClass(key: string): Constructor<GComponent>;
             addChild(child: GObject): GObject;
             addChildAt(child: GObject, index: number): GObject;
             removeChild(child: GObject, dispose?: boolean): GObject;

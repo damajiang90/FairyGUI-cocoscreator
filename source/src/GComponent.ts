@@ -92,50 +92,50 @@ export class GComponent extends GObject {
         return this._container;
     }
 
-    protected _childrenUserClassMap: Record<string, Constructor<GComponent>> = null;
+    protected _childUserClassMap: Record<string, Constructor<GComponent>> = null;
     /**
      * 需在构造函数内注册指定子组件需要自定义实现类
      * @param childName 指定定子组件名
      * @param userClass 自定义实现类，应是GComponent子类
      */
     public registerChildUserClass<T extends GComponent>(childName: string, userClass: Constructor<T>) {
-        if (!this._childrenUserClassMap) {
-            this._childrenUserClassMap = {};
+        if (!this._childUserClassMap) {
+            this._childUserClassMap = {};
         }
-        if (!this._childrenUserClassMap[childName]) {
-            this._childrenUserClassMap[childName] = userClass;
+        if (!this._childUserClassMap[childName]) {
+            this._childUserClassMap[childName] = userClass;
         }
         else {
             console.warn('register child user class exists:', childName);
         }
     }
     public getChildUserClass(key: string): Constructor<GComponent> {
-        if (this._childrenUserClassMap) {
-            return this._childrenUserClassMap[key];
+        if (this._childUserClassMap) {
+            return this._childUserClassMap[key];
         }
         return null;
     }
 
-    protected _childrenListItemUserClassMap: Record<string, Constructor<GComponent>> = null;
+    protected _childListItemUserClassMap: Record<string, Constructor<GComponent>> = null;
     /**
      * 需在构造函数内注册指定子列表生成item需要自定义实现类
      * @param childListName 指定定子列表名
      * @param userClass 自定义实现类，应是GComponent子类
      */
-    public registerChildListItemUserClass<T extends GComponent>(childListName: string, userClass: Constructor<T>) {
-        if (!this._childrenListItemUserClassMap) {
-            this._childrenListItemUserClassMap = {};
+    public registerListItemUserClass<T extends GComponent>(childListName: string, userClass: Constructor<T>) {
+        if (!this._childListItemUserClassMap) {
+            this._childListItemUserClassMap = {};
         }
-        if (!this._childrenListItemUserClassMap[childListName]) {
-            this._childrenListItemUserClassMap[childListName] = userClass;
+        if (!this._childListItemUserClassMap[childListName]) {
+            this._childListItemUserClassMap[childListName] = userClass;
         }
         else {
             console.warn('register child list item user class exists:', childListName);
         }
     }
-    public getChildListItemUserClass(key: string): Constructor<GComponent> {
-        if (this._childrenListItemUserClassMap) {
-            return this._childrenListItemUserClassMap[key];
+    public getListItemUserClass(key: string): Constructor<GComponent> {
+        if (this._childListItemUserClassMap) {
+            return this._childListItemUserClassMap[key];
         }
         return null;
     }
@@ -1178,7 +1178,7 @@ export class GComponent extends GObject {
 
                 if (pi) {
                     let userClass;
-                    if (pi.type == PackageItemType.Component && this._childrenUserClassMap) {
+                    if (pi.type == PackageItemType.Component && this._childUserClassMap) {
                         buffer.seek(curPos, 0);
                         buffer.skip(5);
                         const _ = buffer.readS();

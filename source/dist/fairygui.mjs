@@ -10058,8 +10058,8 @@ class GComponent extends GObject {
         this._sortingChildCount = 0;
         this._childrenRenderOrder = ChildrenRenderOrder.Ascent;
         this._apexIndex = 0;
-        this._childrenUserClassMap = null;
-        this._childrenListItemUserClassMap = null;
+        this._childUserClassMap = null;
+        this._childListItemUserClassMap = null;
         this._node.name = "GComponent";
         this._children = new Array();
         this._controllers = new Array();
@@ -10105,19 +10105,19 @@ class GComponent extends GObject {
      * @param userClass 自定义实现类，应是GComponent子类
      */
     registerChildUserClass(childName, userClass) {
-        if (!this._childrenUserClassMap) {
-            this._childrenUserClassMap = {};
+        if (!this._childUserClassMap) {
+            this._childUserClassMap = {};
         }
-        if (!this._childrenUserClassMap[childName]) {
-            this._childrenUserClassMap[childName] = userClass;
+        if (!this._childUserClassMap[childName]) {
+            this._childUserClassMap[childName] = userClass;
         }
         else {
             console.warn('register child user class exists:', childName);
         }
     }
     getChildUserClass(key) {
-        if (this._childrenUserClassMap) {
-            return this._childrenUserClassMap[key];
+        if (this._childUserClassMap) {
+            return this._childUserClassMap[key];
         }
         return null;
     }
@@ -10126,20 +10126,20 @@ class GComponent extends GObject {
      * @param childListName 指定定子列表名
      * @param userClass 自定义实现类，应是GComponent子类
      */
-    registerChildListItemUserClass(childListName, userClass) {
-        if (!this._childrenListItemUserClassMap) {
-            this._childrenListItemUserClassMap = {};
+    registerListItemUserClass(childListName, userClass) {
+        if (!this._childListItemUserClassMap) {
+            this._childListItemUserClassMap = {};
         }
-        if (!this._childrenListItemUserClassMap[childListName]) {
-            this._childrenListItemUserClassMap[childListName] = userClass;
+        if (!this._childListItemUserClassMap[childListName]) {
+            this._childListItemUserClassMap[childListName] = userClass;
         }
         else {
             console.warn('register child list item user class exists:', childListName);
         }
     }
-    getChildListItemUserClass(key) {
-        if (this._childrenListItemUserClassMap) {
-            return this._childrenListItemUserClassMap[key];
+    getListItemUserClass(key) {
+        if (this._childListItemUserClassMap) {
+            return this._childListItemUserClassMap[key];
         }
         return null;
     }
@@ -11002,7 +11002,7 @@ class GComponent extends GObject {
                 }
                 if (pi) {
                     let userClass;
-                    if (pi.type == PackageItemType.Component && this._childrenUserClassMap) {
+                    if (pi.type == PackageItemType.Component && this._childUserClassMap) {
                         buffer.seek(curPos, 0);
                         buffer.skip(5);
                         buffer.readS();
@@ -15389,7 +15389,7 @@ class GList extends GComponent {
         }
         buffer.seek(beginPos, 8);
         this._defaultItem = buffer.readS();
-        this._pool.setUserClass(parent.getChildListItemUserClass(this._name)); //此时是已经拿到名称了 又因list是没有源文件的 则只有通过name获取
+        this._pool.setUserClass(parent.getListItemUserClass(this._name)); //此时是已经拿到名称了 又因list是没有源文件的 则只有通过name获取
         this.readItems(buffer);
     }
     readItems(buffer) {

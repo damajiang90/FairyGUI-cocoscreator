@@ -1976,7 +1976,7 @@ export class GList extends GComponent {
         }
         buffer.seek(beginPos, 8);
         this._defaultItem = buffer.readS();
-        this._pool.setUserClass(parent.getChildListItemUserClass(this._name)); //此时是已经拿到名称了 又因list是没有源文件的 则只有通过name获取
+        this._pool.setUserClass(parent.getListItemUserClass(this._name)); //此时是已经拿到名称了 又因list是没有源文件的 则只有通过name获取
         this.readItems(buffer);
     }
     readItems(buffer) {
