@@ -915,7 +915,7 @@ export class GObject {
     public constructFromResource(): void {
     }
 
-    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
+    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void {
         buffer.seek(beginPos, 0);
         buffer.skip(5);
 

@@ -3191,7 +3191,7 @@ class GObject {
     }
     constructFromResource() {
     }
-    setup_beforeAdd(buffer, beginPos) {
+    setup_beforeAdd(buffer, beginPos, parent) {
         buffer.seek(beginPos, 0);
         buffer.skip(5);
         var f1;
@@ -3765,8 +3765,8 @@ class GGroup extends GObject {
                 child.handleVisibleChanged();
         }
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         this._layout = buffer.readByte();
         this._lineGap = buffer.readInt();
@@ -3970,8 +3970,8 @@ class GGraph extends GObject {
         else
             return null;
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         this._type = buffer.readByte();
         if (this._type != 0) {
@@ -4191,8 +4191,8 @@ class GImage extends GObject {
         else
             super.setProp(index, value);
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         if (buffer.readBool())
             this.color = buffer.readColor();
@@ -4553,8 +4553,8 @@ class GMovieClip extends GObject {
         this._content.frames = contentItem.frames;
         this._content.smoothing = contentItem.smoothing;
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         if (buffer.readBool())
             this.color = buffer.readColor();
@@ -6292,8 +6292,8 @@ class GTextField extends GObject {
                 break;
         }
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         this.font = buffer.readS();
         this.fontSize = buffer.readShort();
@@ -10058,6 +10058,8 @@ class GComponent extends GObject {
         this._sortingChildCount = 0;
         this._childrenRenderOrder = ChildrenRenderOrder.Ascent;
         this._apexIndex = 0;
+        this._childrenUserClassMap = null;
+        this._childrenListItemUserClassMap = null;
         this._node.name = "GComponent";
         this._children = new Array();
         this._controllers = new Array();
@@ -10092,9 +10094,54 @@ class GComponent extends GObject {
         }
         this._boundsChanged = false;
         super.dispose();
+        this.onDisposed();
     }
     get displayListContainer() {
         return this._container;
+    }
+    /**
+     * 需在构造函数内注册指定子组件需要自定义实现类
+     * @param childName 指定定子组件名
+     * @param userClass 自定义实现类，应是GComponent子类
+     */
+    registerChildUserClass(childName, userClass) {
+        if (!this._childrenUserClassMap) {
+            this._childrenUserClassMap = {};
+        }
+        if (!this._childrenUserClassMap[childName]) {
+            this._childrenUserClassMap[childName] = userClass;
+        }
+        else {
+            console.warn('register child user class exists:', childName);
+        }
+    }
+    getChildUserClass(key) {
+        if (this._childrenUserClassMap) {
+            return this._childrenUserClassMap[key];
+        }
+        return null;
+    }
+    /**
+     * 需在构造函数内注册指定子列表生成item需要自定义实现类
+     * @param childListName 指定定子列表名
+     * @param userClass 自定义实现类，应是GComponent子类
+     */
+    registerChildListItemUserClass(childListName, userClass) {
+        if (!this._childrenListItemUserClassMap) {
+            this._childrenListItemUserClassMap = {};
+        }
+        if (!this._childrenListItemUserClassMap[childListName]) {
+            this._childrenListItemUserClassMap[childListName] = userClass;
+        }
+        else {
+            console.warn('register child list item user class exists:', childListName);
+        }
+    }
+    getChildListItemUserClass(key) {
+        if (this._childrenListItemUserClassMap) {
+            return this._childrenListItemUserClassMap[key];
+        }
+        return null;
     }
     addChild(child) {
         this.addChildAt(child, this._children.length);
@@ -10954,14 +11001,22 @@ class GComponent extends GObject {
                     pi = pkg ? pkg.getItemById(src) : null;
                 }
                 if (pi) {
-                    child = Decls.UIObjectFactory.newObject(pi);
+                    let userClass;
+                    if (pi.type == PackageItemType.Component && this._childrenUserClassMap) {
+                        buffer.seek(curPos, 0);
+                        buffer.skip(5);
+                        buffer.readS();
+                        const _name = buffer.readS(); //为实现从名称来注册userclass
+                        userClass = this.getChildUserClass(_name);
+                    }
+                    child = Decls.UIObjectFactory.newObject(pi, userClass);
                     child.constructFromResource();
                 }
                 else
                     child = Decls.UIObjectFactory.newObject(type);
             }
             child._underConstruct = true;
-            child.setup_beforeAdd(buffer, curPos);
+            child.setup_beforeAdd(buffer, curPos, this);
             child._parent = this;
             child.node.parent = this._container;
             this._children.push(child);
@@ -11028,6 +11083,8 @@ class GComponent extends GObject {
     constructExtension(buffer) {
     }
     onConstruct() {
+    }
+    onDisposed() {
     }
     setup_afterAdd(buffer, beginPos) {
         super.setup_afterAdd(buffer, beginPos);
@@ -11753,8 +11810,8 @@ class GTextInput extends GTextField {
     onTouchEnd1(evt) {
         this._editBox.openKeyboard();
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 4);
         var str = buffer.readS();
         if (str != null)
@@ -11818,6 +11875,12 @@ class GObjectPool {
     get count() {
         return this._count;
     }
+    setUserClass(userClass) {
+        this._userClass = userClass;
+    }
+    getUserClass() {
+        return this._userClass;
+    }
     getObject(url) {
         url = UIPackage.normalizeURL(url);
         if (url == null)
@@ -11827,7 +11890,7 @@ class GObjectPool {
             this._count--;
             return arr.shift();
         }
-        var child = UIPackage.createObjectFromURL(url);
+        var child = UIPackage.createObjectFromURL(url, this._userClass);
         return child;
     }
     returnObject(obj) {
@@ -12299,8 +12362,8 @@ class GLoader extends GObject {
                 break;
         }
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         this._url = buffer.readS();
         this._align = buffer.readByte();
@@ -12720,8 +12783,8 @@ class GLoader3D extends GObject {
                 break;
         }
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         this._url = buffer.readS();
         this._align = buffer.readByte();
@@ -15289,8 +15352,8 @@ class GList extends GComponent {
         this.handleAlign(cw, ch);
         this.setBounds(0, 0, cw, ch);
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         this._layout = buffer.readByte();
         this._selectionMode = buffer.readByte();
@@ -15326,6 +15389,7 @@ class GList extends GComponent {
         }
         buffer.seek(beginPos, 8);
         this._defaultItem = buffer.readS();
+        this._pool.setUserClass(parent.getChildListItemUserClass(this._name)); //此时是已经拿到名称了 又因list是没有源文件的 则只有通过name获取
         this.readItems(buffer);
     }
     readItems(buffer) {
@@ -16749,8 +16813,8 @@ class GTree extends GList {
         }
         super.dispatchItemEvent(item, evt);
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 9);
         this._indent = buffer.readInt();
         this._clickToExpand = buffer.readByte();

@@ -1,6 +1,7 @@
 import { BitmapFont, Color, Font, HorizontalTextAlignment, Label, LabelOutline, LabelShadow, Node, SystemEventType, Vec2, VerticalTextAlignment } from "cc";
 import { Event as FUIEvent } from "./event/Event";
 import { AutoSizeType, ObjectPropID } from "./FieldTypes";
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { UIConfig, getFontByName } from "./UIConfig";
@@ -539,8 +540,8 @@ export class GTextField extends GObject {
         }
     }
 
-    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
-        super.setup_beforeAdd(buffer, beginPos);
+    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void {
+        super.setup_beforeAdd(buffer, beginPos, parent);
 
         buffer.seek(beginPos, 5);
 

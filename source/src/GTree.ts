@@ -337,8 +337,8 @@ export class GTree extends GList {
         super.dispatchItemEvent(item, evt);
     }
 
-    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
-        super.setup_beforeAdd(buffer, beginPos);
+    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void {
+        super.setup_beforeAdd(buffer, beginPos, parent);
 
         buffer.seek(beginPos, 9);
 

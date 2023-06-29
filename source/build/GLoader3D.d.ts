@@ -1,5 +1,6 @@
 import { sp, dragonBones, Color, Vec2 } from "cc";
 import { AlignType, LoaderFillType, VertAlignType } from "./FieldTypes";
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 export declare class GLoader3D extends GObject {
@@ -67,5 +68,5 @@ export declare class GLoader3D extends GObject {
     protected handleGrayedChanged(): void;
     getProp(index: number): any;
     setProp(index: number, value: any): void;
-    setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+    setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
 }

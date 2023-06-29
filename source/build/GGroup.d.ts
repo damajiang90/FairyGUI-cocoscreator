@@ -1,3 +1,4 @@
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 export declare class GGroup extends GObject {
@@ -40,6 +41,6 @@ export declare class GGroup extends GObject {
     resizeChildren(dw: number, dh: number): void;
     handleAlphaChanged(): void;
     handleVisibleChanged(): void;
-    setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+    setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
     setup_afterAdd(buffer: ByteBuffer, beginPos: number): void;
 }

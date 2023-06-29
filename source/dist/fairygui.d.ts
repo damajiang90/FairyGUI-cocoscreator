@@ -62,6 +62,7 @@ declare module 'fgui' {
 }
 
 declare module 'fgui/GGroup' {
+    import { GComponent } from "fgui/GComponent";
     import { GObject } from "fgui/GObject";
     import { ByteBuffer } from "fgui/utils/ByteBuffer";
     export class GGroup extends GObject {
@@ -89,7 +90,7 @@ declare module 'fgui/GGroup' {
         resizeChildren(dw: number, dh: number): void;
         handleAlphaChanged(): void;
         handleVisibleChanged(): void;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
         setup_afterAdd(buffer: ByteBuffer, beginPos: number): void;
     }
 }
@@ -279,7 +280,7 @@ declare module 'fgui/GObject' {
         getProp(index: number): any;
         setProp(index: number, value: any): void;
         constructFromResource(): void;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
         setup_afterAdd(buffer: ByteBuffer, beginPos: number): void;
     }
     export class GObjectPartner extends Component {
@@ -304,6 +305,7 @@ declare module 'fgui/GObject' {
 
 declare module 'fgui/GGraph' {
     import { Color, Graphics, Vec2 } from "cc";
+    import { GComponent } from "fgui/GComponent";
     import { GObject } from "fgui/GObject";
     import { ByteBuffer } from "fgui/utils/ByteBuffer";
     export class GGraph extends GObject {
@@ -324,7 +326,7 @@ declare module 'fgui/GGraph' {
         getProp(index: number): any;
         setProp(index: number, value: any): void;
         protected _hitTest(pt: Vec2): GObject;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
     }
 }
 
@@ -332,6 +334,7 @@ declare module 'fgui/GImage' {
     import { Color } from "cc";
     import { Image } from "fgui/display/Image";
     import { FlipType, FillMethod, FillOrigin } from "fgui/FieldTypes";
+    import { GComponent } from "fgui/GComponent";
     import { GObject } from "fgui/GObject";
     import { ByteBuffer } from "fgui/utils/ByteBuffer";
     export class GImage extends GObject {
@@ -353,13 +356,14 @@ declare module 'fgui/GImage' {
         protected handleGrayedChanged(): void;
         getProp(index: number): any;
         setProp(index: number, value: any): void;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
     }
 }
 
 declare module 'fgui/GMovieClip' {
     import { Color } from "cc";
     import { MovieClip } from "fgui/display/MovieClip";
+    import { GComponent } from "fgui/GComponent";
     import { GObject } from "fgui/GObject";
     import { ByteBuffer } from "fgui/utils/ByteBuffer";
     export class GMovieClip extends GObject {
@@ -382,7 +386,7 @@ declare module 'fgui/GMovieClip' {
         getProp(index: number): any;
         setProp(index: number, value: any): void;
         constructFromResource(): void;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
     }
 }
 
@@ -433,6 +437,7 @@ declare module 'fgui/GRoot' {
 declare module 'fgui/GTextField' {
     import { Color, Font, HorizontalTextAlignment, Label, LabelOutline, LabelShadow, Vec2, VerticalTextAlignment } from "cc";
     import { AutoSizeType } from "fgui/FieldTypes";
+    import { GComponent } from "fgui/GComponent";
     import { GObject } from "fgui/GObject";
     import { ByteBuffer } from "fgui/utils/ByteBuffer";
     export class GTextField extends GObject {
@@ -519,7 +524,7 @@ declare module 'fgui/GTextField' {
         protected handleGrayedChanged(): void;
         getProp(index: number): any;
         setProp(index: number, value: any): void;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
         setup_afterAdd(buffer: ByteBuffer, beginPos: number): void;
     }
 }
@@ -556,6 +561,7 @@ declare module 'fgui/GRichTextField' {
 
 declare module 'fgui/GTextInput' {
     import { EditBox, HorizontalTextAlignment, VerticalTextAlignment } from "cc";
+    import { GComponent } from "fgui/GComponent";
     import { GTextField } from "fgui/GTextField";
     import { ByteBuffer } from "fgui/utils/ByteBuffer";
     export class GTextInput extends GTextField {
@@ -585,7 +591,7 @@ declare module 'fgui/GTextInput' {
         protected updateFontColor(): void;
         protected updateFontSize(): void;
         protected updateOverflow(): void;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
     }
 }
 
@@ -645,13 +651,14 @@ declare module 'fgui/GLoader' {
         protected _hitTest(pt: Vec2, globalPt: Vec2): GObject;
         getProp(index: number): any;
         setProp(index: number, value: any): void;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
     }
 }
 
 declare module 'fgui/GLoader3D' {
     import { sp, dragonBones, Color, Vec2 } from "cc";
     import { AlignType, LoaderFillType, VertAlignType } from "fgui/FieldTypes";
+    import { GComponent } from "fgui/GComponent";
     import { GObject } from "fgui/GObject";
     import { ByteBuffer } from "fgui/utils/ByteBuffer";
     export class GLoader3D extends GObject {
@@ -696,7 +703,7 @@ declare module 'fgui/GLoader3D' {
         protected handleGrayedChanged(): void;
         getProp(index: number): any;
         setProp(index: number, value: any): void;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
     }
 }
 
@@ -712,92 +719,109 @@ declare module 'fgui/GComponent' {
     import { Transition } from "fgui/Transition";
     import { ByteBuffer } from "fgui/utils/ByteBuffer";
     export class GComponent extends GObject {
-        hitArea?: IHitTest;
-        protected _margin: Margin;
-        protected _trackBounds: boolean;
-        protected _boundsChanged: boolean;
-        protected _childrenRenderOrder: ChildrenRenderOrder;
-        protected _apexIndex: number;
-        _buildingDisplayList: boolean;
-        _children: Array<GObject>;
-        _controllers: Array<Controller>;
-        _transitions: Array<Transition>;
-        _container: Node;
-        _scrollPane?: ScrollPane;
-        _alignOffset: Vec2;
-        _customMask?: Mask;
-        constructor();
-        dispose(): void;
-        get displayListContainer(): Node;
-        addChild(child: GObject): GObject;
-        addChildAt(child: GObject, index: number): GObject;
-        removeChild(child: GObject, dispose?: boolean): GObject;
-        removeChildAt(index: number, dispose?: boolean): GObject;
-        removeChildren(beginIndex?: number, endIndex?: number, dispose?: boolean): void;
-        getChildAt<T extends GObject>(index: number, classType?: Constructor<T>): T;
-        getChild<T extends GObject>(name: string, classType?: Constructor<T>): T;
-        getChildByPath<T extends GObject>(path: String, classType?: Constructor<T>): T;
-        getVisibleChild(name: string): GObject;
-        getChildInGroup(name: string, group: GGroup): GObject;
-        getChildById(id: string): GObject;
-        getChildIndex(child: GObject): number;
-        setChildIndex(child: GObject, index: number): void;
-        setChildIndexBefore(child: GObject, index: number): number;
-        swapChildren(child1: GObject, child2: GObject): void;
-        swapChildrenAt(index1: number, index2: number): void;
-        get numChildren(): number;
-        isAncestorOf(child: GObject): boolean;
-        addController(controller: Controller): void;
-        getControllerAt(index: number): Controller;
-        getController(name: string): Controller;
-        removeController(c: Controller): void;
-        get controllers(): Array<Controller>;
-        applyController(c: Controller): void;
-        applyAllControllers(): void;
-        adjustRadioGroupDepth(obj: GObject, c: Controller): void;
-        getTransitionAt(index: number): Transition;
-        getTransition(transName: string): Transition;
-        isChildInView(child: GObject): boolean;
-        getFirstChildInView(): number;
-        get scrollPane(): ScrollPane;
-        get opaque(): boolean;
-        set opaque(value: boolean);
-        get margin(): Margin;
-        set margin(value: Margin);
-        get childrenRenderOrder(): ChildrenRenderOrder;
-        set childrenRenderOrder(value: ChildrenRenderOrder);
-        get apexIndex(): number;
-        set apexIndex(value: number);
-        get mask(): GObject;
-        set mask(value: GObject);
-        setMask(value: GObject, inverted: boolean): void;
-        get _pivotCorrectX(): number;
-        get _pivotCorrectY(): number;
-        get baseUserData(): string;
-        protected setupScroll(buffer: ByteBuffer): void;
-        protected setupOverflow(overflow: OverflowType): void;
-        protected handleAnchorChanged(): void;
-        protected handleSizeChanged(): void;
-        protected handleGrayedChanged(): void;
-        handleControllerChanged(c: Controller): void;
-        protected _hitTest(pt: Vec2, globalPt: Vec2): GObject;
-        setBoundsChangedFlag(): void;
-        ensureBoundsCorrect(): void;
-        protected updateBounds(): void;
-        setBounds(ax: number, ay: number, aw: number, ah?: number): void;
-        get viewWidth(): number;
-        set viewWidth(value: number);
-        get viewHeight(): number;
-        set viewHeight(value: number);
-        getSnappingPosition(xValue: number, yValue: number, resultPoint?: Vec2): Vec2;
-        childSortingOrderChanged(child: GObject, oldValue: number, newValue?: number): void;
-        constructFromResource(): void;
-        constructFromResource2(objectPool: Array<GObject>, poolIndex: number): void;
-        protected constructExtension(buffer: ByteBuffer): void;
-        protected onConstruct(): void;
-        setup_afterAdd(buffer: ByteBuffer, beginPos: number): void;
-        protected onEnable(): void;
-        protected onDisable(): void;
+            hitArea?: IHitTest;
+            protected _margin: Margin;
+            protected _trackBounds: boolean;
+            protected _boundsChanged: boolean;
+            protected _childrenRenderOrder: ChildrenRenderOrder;
+            protected _apexIndex: number;
+            _buildingDisplayList: boolean;
+            _children: Array<GObject>;
+            _controllers: Array<Controller>;
+            _transitions: Array<Transition>;
+            _container: Node;
+            _scrollPane?: ScrollPane;
+            _alignOffset: Vec2;
+            _customMask?: Mask;
+            constructor();
+            dispose(): void;
+            get displayListContainer(): Node;
+            protected _childrenUserClassMap: Record<string, Constructor<GComponent>>;
+            /**
+                * 需在构造函数内注册指定子组件需要自定义实现类
+                * @param childName 指定定子组件名
+                * @param userClass 自定义实现类，应是GComponent子类
+                */
+            registerChildUserClass<T extends GComponent>(childName: string, userClass: Constructor<T>): void;
+            getChildUserClass(key: string): Constructor<GComponent>;
+            protected _childrenListItemUserClassMap: Record<string, Constructor<GComponent>>;
+            /**
+                * 需在构造函数内注册指定子列表生成item需要自定义实现类
+                * @param childListName 指定定子列表名
+                * @param userClass 自定义实现类，应是GComponent子类
+                */
+            registerChildListItemUserClass<T extends GComponent>(childListName: string, userClass: Constructor<T>): void;
+            getChildListItemUserClass(key: string): Constructor<GComponent>;
+            addChild(child: GObject): GObject;
+            addChildAt(child: GObject, index: number): GObject;
+            removeChild(child: GObject, dispose?: boolean): GObject;
+            removeChildAt(index: number, dispose?: boolean): GObject;
+            removeChildren(beginIndex?: number, endIndex?: number, dispose?: boolean): void;
+            getChildAt<T extends GObject>(index: number, classType?: Constructor<T>): T;
+            getChild<T extends GObject>(name: string, classType?: Constructor<T>): T;
+            getChildByPath<T extends GObject>(path: String, classType?: Constructor<T>): T;
+            getVisibleChild(name: string): GObject;
+            getChildInGroup(name: string, group: GGroup): GObject;
+            getChildById(id: string): GObject;
+            getChildIndex(child: GObject): number;
+            setChildIndex(child: GObject, index: number): void;
+            setChildIndexBefore(child: GObject, index: number): number;
+            swapChildren(child1: GObject, child2: GObject): void;
+            swapChildrenAt(index1: number, index2: number): void;
+            get numChildren(): number;
+            isAncestorOf(child: GObject): boolean;
+            addController(controller: Controller): void;
+            getControllerAt(index: number): Controller;
+            getController(name: string): Controller;
+            removeController(c: Controller): void;
+            get controllers(): Array<Controller>;
+            applyController(c: Controller): void;
+            applyAllControllers(): void;
+            adjustRadioGroupDepth(obj: GObject, c: Controller): void;
+            getTransitionAt(index: number): Transition;
+            getTransition(transName: string): Transition;
+            isChildInView(child: GObject): boolean;
+            getFirstChildInView(): number;
+            get scrollPane(): ScrollPane;
+            get opaque(): boolean;
+            set opaque(value: boolean);
+            get margin(): Margin;
+            set margin(value: Margin);
+            get childrenRenderOrder(): ChildrenRenderOrder;
+            set childrenRenderOrder(value: ChildrenRenderOrder);
+            get apexIndex(): number;
+            set apexIndex(value: number);
+            get mask(): GObject;
+            set mask(value: GObject);
+            setMask(value: GObject, inverted: boolean): void;
+            get _pivotCorrectX(): number;
+            get _pivotCorrectY(): number;
+            get baseUserData(): string;
+            protected setupScroll(buffer: ByteBuffer): void;
+            protected setupOverflow(overflow: OverflowType): void;
+            protected handleAnchorChanged(): void;
+            protected handleSizeChanged(): void;
+            protected handleGrayedChanged(): void;
+            handleControllerChanged(c: Controller): void;
+            protected _hitTest(pt: Vec2, globalPt: Vec2): GObject;
+            setBoundsChangedFlag(): void;
+            ensureBoundsCorrect(): void;
+            protected updateBounds(): void;
+            setBounds(ax: number, ay: number, aw: number, ah?: number): void;
+            get viewWidth(): number;
+            set viewWidth(value: number);
+            get viewHeight(): number;
+            set viewHeight(value: number);
+            getSnappingPosition(xValue: number, yValue: number, resultPoint?: Vec2): Vec2;
+            childSortingOrderChanged(child: GObject, oldValue: number, newValue?: number): void;
+            constructFromResource(): void;
+            constructFromResource2(objectPool: Array<GObject>, poolIndex: number): void;
+            protected constructExtension(buffer: ByteBuffer): void;
+            protected onConstruct(): void;
+            protected onDisposed(): void;
+            setup_afterAdd(buffer: ByteBuffer, beginPos: number): void;
+            protected onEnable(): void;
+            protected onDisable(): void;
     }
 }
 
@@ -1083,7 +1107,7 @@ declare module 'fgui/GList' {
         set numItems(value: number);
         refreshVirtualList(): void;
         protected updateBounds(): void;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
         protected readItems(buffer: ByteBuffer): void;
         protected setupItem(buffer: ByteBuffer, obj: GObject): void;
         setup_afterAdd(buffer: ByteBuffer, beginPos: number): void;
@@ -1118,7 +1142,7 @@ declare module 'fgui/GTree' {
         _afterCollapsed(node: GTreeNode): void;
         _afterMoved(node: GTreeNode): void;
         protected dispatchItemEvent(item: GObject, evt: FUIEvent): void;
-        setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+        setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
         protected readItems(buffer: ByteBuffer): void;
     }
 }
@@ -1699,11 +1723,15 @@ declare module 'fgui/PackageItem' {
 }
 
 declare module 'fgui/GObjectPool' {
+    import { Constructor } from "cc";
+    import { GComponent } from "fgui/GComponent";
     import { GObject } from "fgui/GObject";
     export class GObjectPool {
         constructor();
         clear(): void;
         get count(): number;
+        setUserClass(userClass: Constructor<GComponent>): void;
+        getUserClass(): Constructor<GComponent>;
         getObject(url: string): GObject;
         returnObject(obj: GObject): void;
     }

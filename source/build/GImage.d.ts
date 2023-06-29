@@ -1,6 +1,7 @@
 import { Color } from "cc";
 import { Image } from "./display/Image";
 import { FlipType, FillMethod, FillOrigin } from "./FieldTypes";
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 export declare class GImage extends GObject {
@@ -22,5 +23,5 @@ export declare class GImage extends GObject {
     protected handleGrayedChanged(): void;
     getProp(index: number): any;
     setProp(index: number, value: any): void;
-    setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+    setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
 }

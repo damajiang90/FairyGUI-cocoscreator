@@ -2,7 +2,7 @@ import { Mask, Vec2, Size, Node, UITransform, Constructor } from "cc";
 import { Controller } from "./Controller";
 import { Event as FUIEvent } from "./event/Event";
 import { IHitTest, PixelHitTest, ChildHitArea } from "./event/HitTest";
-import { ChildrenRenderOrder, OverflowType, ObjectType } from "./FieldTypes";
+import { ChildrenRenderOrder, OverflowType, ObjectType, PackageItemType } from "./FieldTypes";
 import { GGraph } from "./GGraph";
 import { GGroup } from "./GGroup";
 import { GImage } from "./GImage";
@@ -85,10 +85,59 @@ export class GComponent extends GObject {
 
         this._boundsChanged = false;
         super.dispose();
+        this.onDisposed();
     }
 
     public get displayListContainer(): Node {
         return this._container;
+    }
+
+    protected _childrenUserClassMap: Record<string, Constructor<GComponent>> = null;
+    /**
+     * 需在构造函数内注册指定子组件需要自定义实现类
+     * @param childName 指定定子组件名
+     * @param userClass 自定义实现类，应是GComponent子类
+     */
+    public registerChildUserClass<T extends GComponent>(childName: string, userClass: Constructor<T>) {
+        if (!this._childrenUserClassMap) {
+            this._childrenUserClassMap = {};
+        }
+        if (!this._childrenUserClassMap[childName]) {
+            this._childrenUserClassMap[childName] = userClass;
+        }
+        else {
+            console.warn('register child user class exists:', childName);
+        }
+    }
+    public getChildUserClass(key: string): Constructor<GComponent> {
+        if (this._childrenUserClassMap) {
+            return this._childrenUserClassMap[key];
+        }
+        return null;
+    }
+
+    protected _childrenListItemUserClassMap: Record<string, Constructor<GComponent>> = null;
+    /**
+     * 需在构造函数内注册指定子列表生成item需要自定义实现类
+     * @param childListName 指定定子列表名
+     * @param userClass 自定义实现类，应是GComponent子类
+     */
+    public registerChildListItemUserClass<T extends GComponent>(childListName: string, userClass: Constructor<T>) {
+        if (!this._childrenListItemUserClassMap) {
+            this._childrenListItemUserClassMap = {};
+        }
+        if (!this._childrenListItemUserClassMap[childListName]) {
+            this._childrenListItemUserClassMap[childListName] = userClass;
+        }
+        else {
+            console.warn('register child list item user class exists:', childListName);
+        }
+    }
+    public getChildListItemUserClass(key: string): Constructor<GComponent> {
+        if (this._childrenListItemUserClassMap) {
+            return this._childrenListItemUserClassMap[key];
+        }
+        return null;
     }
 
     public addChild(child: GObject): GObject {
@@ -1128,7 +1177,15 @@ export class GComponent extends GObject {
                 }
 
                 if (pi) {
-                    child = Decls.UIObjectFactory.newObject(pi);
+                    let userClass;
+                    if (pi.type == PackageItemType.Component && this._childrenUserClassMap) {
+                        buffer.seek(curPos, 0);
+                        buffer.skip(5);
+                        const _ = buffer.readS();
+                        const _name = buffer.readS();//为实现从名称来注册userclass
+                        userClass = this.getChildUserClass(_name);
+                    }
+                    child = Decls.UIObjectFactory.newObject(pi, userClass);
                     child.constructFromResource();
                 }
                 else
@@ -1136,7 +1193,7 @@ export class GComponent extends GObject {
             }
 
             child._underConstruct = true;
-            child.setup_beforeAdd(buffer, curPos);
+            child.setup_beforeAdd(buffer, curPos, this);
             child._parent = this;
             child.node.parent = this._container;
             this._children.push(child);
@@ -1228,6 +1285,9 @@ export class GComponent extends GObject {
     }
 
     protected onConstruct(): void {
+    }
+
+    protected onDisposed(): void {
     }
 
     public setup_afterAdd(buffer: ByteBuffer, beginPos: number): void {

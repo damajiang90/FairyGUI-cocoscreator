@@ -398,8 +398,8 @@ export class GLoader3D extends GObject {
                 break;
         }
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         this._url = buffer.readS();
         this._align = buffer.readByte();

@@ -1,6 +1,7 @@
 import { Sprite, Color, SpriteFrame } from "cc";
 import { Image } from "./display/Image";
 import { FlipType, FillMethod, FillOrigin, ObjectPropID } from "./FieldTypes";
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { ByteBuffer } from "./utils/ByteBuffer";
@@ -103,8 +104,8 @@ export class GImage extends GObject {
             super.setProp(index, value);
     }
 
-    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
-        super.setup_beforeAdd(buffer, beginPos);
+    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void {
+        super.setup_beforeAdd(buffer, beginPos, parent);
 
         buffer.seek(beginPos, 5);
 

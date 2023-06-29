@@ -37,6 +37,6 @@ export declare class GTree extends GList {
     private __cellMouseDown;
     private __expandedStateChanged;
     protected dispatchItemEvent(item: GObject, evt: FUIEvent): void;
-    setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+    setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
     protected readItems(buffer: ByteBuffer): void;
 }

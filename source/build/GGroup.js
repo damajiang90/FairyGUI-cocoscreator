@@ -355,8 +355,8 @@ export class GGroup extends GObject {
                 child.handleVisibleChanged();
         }
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         this._layout = buffer.readByte();
         this._lineGap = buffer.readInt();

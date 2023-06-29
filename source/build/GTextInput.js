@@ -129,8 +129,8 @@ export class GTextInput extends GTextField {
     onTouchEnd1(evt) {
         this._editBox.openKeyboard();
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 4);
         var str = buffer.readS();
         if (str != null)

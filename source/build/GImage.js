@@ -78,8 +78,8 @@ export class GImage extends GObject {
         else
             super.setProp(index, value);
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         if (buffer.readBool())
             this.color = buffer.readColor();

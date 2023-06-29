@@ -1,6 +1,7 @@
 import { sp, dragonBones, assetManager, Color, isValid, resources, Vec2, Node, UITransform, Asset, math } from "cc";
 import spine from "../lib/spine-core";
 import { AlignType, LoaderFillType, ObjectPropID, PackageItemType, VertAlignType } from "./FieldTypes";
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { PackageItem } from "./PackageItem";
 import { UIConfig } from "./UIConfig";
@@ -504,8 +505,8 @@ export class GLoader3D extends GObject {
         }
     }
 
-    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
-        super.setup_beforeAdd(buffer, beginPos);
+    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void {
+        super.setup_beforeAdd(buffer, beginPos, parent);
 
         buffer.seek(beginPos, 5);
 

@@ -73,5 +73,5 @@ export declare class GLoader extends GObject {
     protected _hitTest(pt: Vec2, globalPt: Vec2): GObject;
     getProp(index: number): any;
     setProp(index: number, value: any): void;
-    setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+    setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
 }

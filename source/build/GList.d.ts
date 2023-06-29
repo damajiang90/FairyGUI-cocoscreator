@@ -119,7 +119,7 @@ export declare class GList extends GComponent {
     private handleArchOrder2;
     private handleAlign;
     protected updateBounds(): void;
-    setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+    setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
     protected readItems(buffer: ByteBuffer): void;
     protected setupItem(buffer: ByteBuffer, obj: GObject): void;
     setup_afterAdd(buffer: ByteBuffer, beginPos: number): void;

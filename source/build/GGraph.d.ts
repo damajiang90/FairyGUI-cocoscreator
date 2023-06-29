@@ -1,4 +1,5 @@
 import { Color, Graphics, Vec2 } from "cc";
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 export declare class GGraph extends GObject {
@@ -31,5 +32,5 @@ export declare class GGraph extends GObject {
     getProp(index: number): any;
     setProp(index: number, value: any): void;
     protected _hitTest(pt: Vec2): GObject;
-    setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+    setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
 }

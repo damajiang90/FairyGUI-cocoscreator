@@ -184,7 +184,7 @@ export declare class GObject {
     getProp(index: number): any;
     setProp(index: number, value: any): void;
     constructFromResource(): void;
-    setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+    setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
     setup_afterAdd(buffer: ByteBuffer, beginPos: number): void;
     private onRollOver;
     private onRollOut;

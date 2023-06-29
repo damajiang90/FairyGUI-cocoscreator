@@ -1,6 +1,7 @@
 import { Color, EditBox, HorizontalTextAlignment, VerticalTextAlignment } from "cc";
 import { Event as FUIEvent } from "./event/Event";
 import { AutoSizeType } from "./FieldTypes";
+import { GComponent } from "./GComponent";
 import { GTextField } from "./GTextField";
 import { ByteBuffer } from "./utils/ByteBuffer";
 import { defaultParser } from "./utils/UBBParser";
@@ -169,8 +170,8 @@ export class GTextInput extends GTextField {
         (<MyEditBox>this._editBox).openKeyboard();
     }
 
-    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
-        super.setup_beforeAdd(buffer, beginPos);
+    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void {
+        super.setup_beforeAdd(buffer, beginPos, parent);
 
         buffer.seek(beginPos, 4);
 

@@ -1939,8 +1939,8 @@ export class GList extends GComponent {
         this.handleAlign(cw, ch);
         this.setBounds(0, 0, cw, ch);
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         this._layout = buffer.readByte();
         this._selectionMode = buffer.readByte();
@@ -1976,6 +1976,7 @@ export class GList extends GComponent {
         }
         buffer.seek(beginPos, 8);
         this._defaultItem = buffer.readS();
+        this._pool.setUserClass(parent.getChildListItemUserClass(this._name)); //此时是已经拿到名称了 又因list是没有源文件的 则只有通过name获取
         this.readItems(buffer);
     }
     readItems(buffer) {

@@ -263,8 +263,8 @@ export class GTree extends GList {
         }
         super.dispatchItemEvent(item, evt);
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 9);
         this._indent = buffer.readInt();
         this._clickToExpand = buffer.readByte();

@@ -187,8 +187,8 @@ export class GGraph extends GObject {
         else
             return null;
     }
-    setup_beforeAdd(buffer, beginPos) {
-        super.setup_beforeAdd(buffer, beginPos);
+    setup_beforeAdd(buffer, beginPos, parent) {
+        super.setup_beforeAdd(buffer, beginPos, parent);
         buffer.seek(beginPos, 5);
         this._type = buffer.readByte();
         if (this._type != 0) {

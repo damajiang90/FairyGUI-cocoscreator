@@ -1,9 +1,12 @@
+import { Constructor } from "cc";
+import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { UIPackage } from "./UIPackage";
 
 export class GObjectPool {
     private _pool: { [index: string]: Array<GObject> };
     private _count: number = 0;
+    private _userClass: Constructor<GComponent>;
 
     public constructor() {
         this._pool = {};
@@ -24,6 +27,14 @@ export class GObjectPool {
         return this._count;
     }
 
+    public setUserClass(userClass: Constructor<GComponent>) {
+        this._userClass = userClass;
+    }
+
+    public getUserClass(): Constructor<GComponent>{
+        return this._userClass;
+    }
+
     public getObject(url: string): GObject {
         url = UIPackage.normalizeURL(url);
         if (url == null)
@@ -35,7 +46,7 @@ export class GObjectPool {
             return arr.shift();
         }
 
-        var child: GObject = UIPackage.createObjectFromURL(url);
+        var child: GObject = UIPackage.createObjectFromURL(url, this._userClass);
         return child;
     }
 

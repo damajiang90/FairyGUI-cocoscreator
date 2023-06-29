@@ -17,6 +17,12 @@ export class GObjectPool {
     get count() {
         return this._count;
     }
+    setUserClass(userClass) {
+        this._userClass = userClass;
+    }
+    getUserClass() {
+        return this._userClass;
+    }
     getObject(url) {
         url = UIPackage.normalizeURL(url);
         if (url == null)
@@ -26,7 +32,7 @@ export class GObjectPool {
             this._count--;
             return arr.shift();
         }
-        var child = UIPackage.createObjectFromURL(url);
+        var child = UIPackage.createObjectFromURL(url, this._userClass);
         return child;
     }
     returnObject(obj) {

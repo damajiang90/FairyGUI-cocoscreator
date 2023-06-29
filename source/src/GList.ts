@@ -2228,8 +2228,8 @@ export class GList extends GComponent {
         this.setBounds(0, 0, cw, ch);
     }
 
-    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void {
-        super.setup_beforeAdd(buffer, beginPos);
+    public setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void {
+        super.setup_beforeAdd(buffer, beginPos, parent);
 
         buffer.seek(beginPos, 5);
 
@@ -2273,6 +2273,7 @@ export class GList extends GComponent {
         buffer.seek(beginPos, 8);
 
         this._defaultItem = buffer.readS();
+        this._pool.setUserClass(parent.getChildListItemUserClass(this._name));//此时是已经拿到名称了 又因list是没有源文件的 则只有通过name获取
         this.readItems(buffer);
     }
 

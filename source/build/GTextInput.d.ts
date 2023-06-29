@@ -1,4 +1,5 @@
 import { EditBox, HorizontalTextAlignment, VerticalTextAlignment } from "cc";
+import { GComponent } from "./GComponent";
 import { GTextField } from "./GTextField";
 import { ByteBuffer } from "./utils/ByteBuffer";
 export declare class GTextInput extends GTextField {
@@ -31,5 +32,5 @@ export declare class GTextInput extends GTextField {
     protected updateOverflow(): void;
     private onTextChanged;
     private onTouchEnd1;
-    setup_beforeAdd(buffer: ByteBuffer, beginPos: number): void;
+    setup_beforeAdd(buffer: ByteBuffer, beginPos: number, parent: GComponent): void;
 }

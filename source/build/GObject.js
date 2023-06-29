@@ -711,7 +711,7 @@ export class GObject {
     }
     constructFromResource() {
     }
-    setup_beforeAdd(buffer, beginPos) {
+    setup_beforeAdd(buffer, beginPos, parent) {
         buffer.seek(beginPos, 0);
         buffer.skip(5);
         var f1;

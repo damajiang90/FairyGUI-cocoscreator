@@ -2,7 +2,7 @@ import { Mask, Vec2, Node, UITransform } from "cc";
 import { Controller } from "./Controller";
 import { Event as FUIEvent } from "./event/Event";
 import { PixelHitTest, ChildHitArea } from "./event/HitTest";
-import { ChildrenRenderOrder, OverflowType, ObjectType } from "./FieldTypes";
+import { ChildrenRenderOrder, OverflowType, ObjectType, PackageItemType } from "./FieldTypes";
 import { GGraph } from "./GGraph";
 import { GImage } from "./GImage";
 import { GObject } from "./GObject";
@@ -19,6 +19,8 @@ export class GComponent extends GObject {
         this._sortingChildCount = 0;
         this._childrenRenderOrder = ChildrenRenderOrder.Ascent;
         this._apexIndex = 0;
+        this._childrenUserClassMap = null;
+        this._childrenListItemUserClassMap = null;
         this._node.name = "GComponent";
         this._children = new Array();
         this._controllers = new Array();
@@ -53,9 +55,54 @@ export class GComponent extends GObject {
         }
         this._boundsChanged = false;
         super.dispose();
+        this.onDisposed();
     }
     get displayListContainer() {
         return this._container;
+    }
+    /**
+     * 需在构造函数内注册指定子组件需要自定义实现类
+     * @param childName 指定定子组件名
+     * @param userClass 自定义实现类，应是GComponent子类
+     */
+    registerChildUserClass(childName, userClass) {
+        if (!this._childrenUserClassMap) {
+            this._childrenUserClassMap = {};
+        }
+        if (!this._childrenUserClassMap[childName]) {
+            this._childrenUserClassMap[childName] = userClass;
+        }
+        else {
+            console.warn('register child user class exists:', childName);
+        }
+    }
+    getChildUserClass(key) {
+        if (this._childrenUserClassMap) {
+            return this._childrenUserClassMap[key];
+        }
+        return null;
+    }
+    /**
+     * 需在构造函数内注册指定子列表生成item需要自定义实现类
+     * @param childListName 指定定子列表名
+     * @param userClass 自定义实现类，应是GComponent子类
+     */
+    registerChildListItemUserClass(childListName, userClass) {
+        if (!this._childrenListItemUserClassMap) {
+            this._childrenListItemUserClassMap = {};
+        }
+        if (!this._childrenListItemUserClassMap[childListName]) {
+            this._childrenListItemUserClassMap[childListName] = userClass;
+        }
+        else {
+            console.warn('register child list item user class exists:', childListName);
+        }
+    }
+    getChildListItemUserClass(key) {
+        if (this._childrenListItemUserClassMap) {
+            return this._childrenListItemUserClassMap[key];
+        }
+        return null;
     }
     addChild(child) {
         this.addChildAt(child, this._children.length);
@@ -915,14 +962,22 @@ export class GComponent extends GObject {
                     pi = pkg ? pkg.getItemById(src) : null;
                 }
                 if (pi) {
-                    child = Decls.UIObjectFactory.newObject(pi);
+                    let userClass;
+                    if (pi.type == PackageItemType.Component && this._childrenUserClassMap) {
+                        buffer.seek(curPos, 0);
+                        buffer.skip(5);
+                        const _ = buffer.readS();
+                        const _name = buffer.readS(); //为实现从名称来注册userclass
+                        userClass = this.getChildUserClass(_name);
+                    }
+                    child = Decls.UIObjectFactory.newObject(pi, userClass);
                     child.constructFromResource();
                 }
                 else
                     child = Decls.UIObjectFactory.newObject(type);
             }
             child._underConstruct = true;
-            child.setup_beforeAdd(buffer, curPos);
+            child.setup_beforeAdd(buffer, curPos, this);
             child._parent = this;
             child.node.parent = this._container;
             this._children.push(child);
@@ -989,6 +1044,8 @@ export class GComponent extends GObject {
     constructExtension(buffer) {
     }
     onConstruct() {
+    }
+    onDisposed() {
     }
     setup_afterAdd(buffer, beginPos) {
         super.setup_afterAdd(buffer, beginPos);
