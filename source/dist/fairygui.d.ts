@@ -2058,6 +2058,7 @@ declare module 'fgui/event/Event' {
         static ROLL_OVER: string;
         static ROLL_OUT: string;
         static MOUSE_WHEEL: string;
+        static DISPOSE: string;
         static DISPLAY: string;
         static UNDISPLAY: string;
         static GEAR_STOP: string;

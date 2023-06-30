@@ -271,6 +271,7 @@ Event.CLICK = "fui_click";
 Event.ROLL_OVER = "fui_roll_over";
 Event.ROLL_OUT = "fui_roll_out";
 Event.MOUSE_WHEEL = "fui_mouse_wheel";
+Event.DISPOSE = "fui_dispose";
 Event.DISPLAY = "fui_display";
 Event.UNDISPLAY = "fui_undisplay";
 Event.GEAR_STOP = "fui_gear_stop";
@@ -2963,6 +2964,9 @@ class GObject {
         let n = this._node;
         if (!n)
             return;
+        if (this._partner._emitDisplayEvents) {
+            n.emit(Event.DISPOSE);
+        }
         this.removeFromParent();
         this._relations.dispose();
         this._node = null;
@@ -2997,12 +3001,12 @@ class GObject {
         return this._node.hasEventListener(Event.CLICK);
     }
     on(type, listener, target) {
-        if (type == Event.DISPLAY || type == Event.UNDISPLAY)
+        if (type == Event.DISPLAY || type == Event.UNDISPLAY || type == Event.DISPOSE)
             this._partner._emitDisplayEvents = true;
         this._node.on(type, listener, target);
     }
     once(type, listener, target) {
-        if (type == Event.DISPLAY || type == Event.UNDISPLAY)
+        if (type == Event.DISPLAY || type == Event.UNDISPLAY || type == Event.DISPOSE)
             this._partner._emitDisplayEvents = true;
         this._node.once(type, listener, target);
     }

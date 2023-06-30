@@ -640,7 +640,9 @@ export class GObject {
         let n = this._node;
         if (!n)
             return;
-
+        if (this._partner._emitDisplayEvents) {
+            n.emit(FUIEvent.DISPOSE);
+        }
         this.removeFromParent();
         this._relations.dispose();
 
@@ -687,14 +689,14 @@ export class GObject {
     }
 
     public on(type: string, listener: Function, target?: any): void {
-        if (type == FUIEvent.DISPLAY || type == FUIEvent.UNDISPLAY)
+        if (type == FUIEvent.DISPLAY || type == FUIEvent.UNDISPLAY || type == FUIEvent.DISPOSE)
             this._partner._emitDisplayEvents = true;
 
         this._node.on(type, listener, target);
     }
 
     public once(type: string, listener: Function, target?: any): void {
-        if (type == FUIEvent.DISPLAY || type == FUIEvent.UNDISPLAY)
+        if (type == FUIEvent.DISPLAY || type == FUIEvent.UNDISPLAY || type == FUIEvent.DISPOSE)
             this._partner._emitDisplayEvents = true;
 
         this._node.once(type, listener, target);

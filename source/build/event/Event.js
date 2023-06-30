@@ -32,6 +32,7 @@ Event.CLICK = "fui_click";
 Event.ROLL_OVER = "fui_roll_over";
 Event.ROLL_OUT = "fui_roll_out";
 Event.MOUSE_WHEEL = "fui_mouse_wheel";
+Event.DISPOSE = "fui_dispose";
 Event.DISPLAY = "fui_display";
 Event.UNDISPLAY = "fui_undisplay";
 Event.GEAR_STOP = "fui_gear_stop";

@@ -11,6 +11,8 @@ export class Event extends CCEvent {
     public static ROLL_OUT: string = "fui_roll_out";
     public static MOUSE_WHEEL: string = "fui_mouse_wheel"
 
+    public static DISPOSE: string = "fui_dispose";
+
     public static DISPLAY: string = "fui_display";
     public static UNDISPLAY: string = "fui_undisplay";
     public static GEAR_STOP: string = "fui_gear_stop";

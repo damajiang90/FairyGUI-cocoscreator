@@ -483,6 +483,9 @@ export class GObject {
         let n = this._node;
         if (!n)
             return;
+        if (this._partner._emitDisplayEvents) {
+            n.emit(FUIEvent.DISPOSE);
+        }
         this.removeFromParent();
         this._relations.dispose();
         this._node = null;
@@ -517,12 +520,12 @@ export class GObject {
         return this._node.hasEventListener(FUIEvent.CLICK);
     }
     on(type, listener, target) {
-        if (type == FUIEvent.DISPLAY || type == FUIEvent.UNDISPLAY)
+        if (type == FUIEvent.DISPLAY || type == FUIEvent.UNDISPLAY || type == FUIEvent.DISPOSE)
             this._partner._emitDisplayEvents = true;
         this._node.on(type, listener, target);
     }
     once(type, listener, target) {
-        if (type == FUIEvent.DISPLAY || type == FUIEvent.UNDISPLAY)
+        if (type == FUIEvent.DISPLAY || type == FUIEvent.UNDISPLAY || type == FUIEvent.DISPOSE)
             this._partner._emitDisplayEvents = true;
         this._node.once(type, listener, target);
     }
