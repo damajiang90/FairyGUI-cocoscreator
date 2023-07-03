@@ -51,6 +51,7 @@ declare module 'fgui' {
     export { GearXY } from "fgui/gears/GearXY";
     export * from "fgui/FieldTypes";
     export { BlendMode } from "fgui/display/BlendMode";
+    export { Graph } from "fgui/display/Graph";
     export { Image } from "fgui/display/Image";
     export { MovieClip, Frame } from "fgui/display/MovieClip";
     export { Event } from "fgui/event/Event";
@@ -304,12 +305,13 @@ declare module 'fgui/GObject' {
 }
 
 declare module 'fgui/GGraph' {
-    import { Color, Graphics, Vec2 } from "cc";
+    import { Color, Vec2 } from "cc";
+    import { Graph } from "fgui/display/Graph";
     import { GComponent } from "fgui/GComponent";
     import { GObject } from "fgui/GObject";
     import { ByteBuffer } from "fgui/utils/ByteBuffer";
     export class GGraph extends GObject {
-        _content: Graphics;
+        _content: Graph;
         constructor();
         drawRect(lineSize: number, lineColor: Color, fillColor: Color, corner?: Array<number>): void;
         drawEllipse(lineSize: number, lineColor: Color, fillColor: Color): void;
@@ -1994,6 +1996,14 @@ declare module 'fgui/display/BlendMode' {
     export class BlendModeUtils {
         static apply(node: Node, blendMode: BlendMode): void;
         static override(blendMode: BlendMode, srcFactor: number, dstFactor: number): void;
+    }
+}
+
+declare module 'fgui/display/Graph' {
+    import { Graphics, __private } from "cc";
+    export class Graph extends Graphics {
+        _render(render: __private._cocos_2d_renderer_i_batcher__IBatcher): void;
+        updateOpacity(): void;
     }
 }
 

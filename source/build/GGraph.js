@@ -1,4 +1,5 @@
-import { Color, Graphics, misc } from "cc";
+import { Color, misc } from "cc";
+import { Graph } from "./display/Graph";
 import { ObjectPropID } from "./FieldTypes";
 import { GObject } from "./GObject";
 export class GGraph extends GObject {
@@ -10,7 +11,7 @@ export class GGraph extends GObject {
         this._lineSize = 1;
         this._lineColor = new Color();
         this._fillColor = new Color(255, 255, 255, 255);
-        this._content = this._node.addComponent(Graphics);
+        this._content = this._node.addComponent(Graph);
     }
     drawRect(lineSize, lineColor, fillColor, corner) {
         this._type = 1;

@@ -1,9 +1,10 @@
-import { Color, Graphics, Vec2 } from "cc";
+import { Color, Vec2 } from "cc";
+import { Graph } from "./display/Graph";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 export declare class GGraph extends GObject {
-    _content: Graphics;
+    _content: Graph;
     private _type;
     private _lineSize;
     private _lineColor;

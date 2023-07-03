@@ -46,6 +46,7 @@ export { GearText } from "./gears/GearText";
 export { GearXY } from "./gears/GearXY";
 export * from "./FieldTypes";
 export { BlendMode } from "./display/BlendMode";
+export { Graph } from "./display/Graph";
 export { Image } from "./display/Image";
 export { MovieClip } from "./display/MovieClip";
 export { Event } from "./event/Event";

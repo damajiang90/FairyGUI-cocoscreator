@@ -1,11 +1,12 @@
-import { Color, Graphics, misc, Vec2 } from "cc";
+import { Color, misc, Vec2 } from "cc";
+import { Graph } from "./display/Graph";
 import { ObjectPropID } from "./FieldTypes";
 import { GComponent } from "./GComponent";
 import { GObject } from "./GObject";
 import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GGraph extends GObject {
-    public _content: Graphics;
+    public _content: Graph;
 
     private _type: number = 0;
     private _lineSize: number = 0;
@@ -26,7 +27,7 @@ export class GGraph extends GObject {
         this._lineColor = new Color();
         this._fillColor = new Color(255, 255, 255, 255);
 
-        this._content = this._node.addComponent(Graphics);
+        this._content = this._node.addComponent(Graph);
     }
 
     public drawRect(lineSize: number, lineColor: Color, fillColor: Color, corner?: Array<number>): void {
@@ -166,7 +167,7 @@ export class GGraph extends GObject {
         this._hasContent = true;
     }
 
-    private drawPath(ctx: Graphics, points: number[], px: number, py: number): void {
+    private drawPath(ctx: Graph, points: number[], px: number, py: number): void {
         var cnt: number = points.length;
         ctx.moveTo(points[0] + px, -points[1] + py);
         for (var i: number = 2; i < cnt; i += 2)
