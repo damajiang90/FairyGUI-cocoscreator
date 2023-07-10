@@ -41,9 +41,23 @@ gulp.task("uglify", function () {
         .pipe(gulp.dest("dist/"));
 });
 
+gulp.task("uglifyClient", function () {
+    return gulp.src("dist/fairygui.mjs")
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(uglify(/* options */))
+        .pipe(gulp.dest("../../../mini_client/trunk/client_dev/assets/libs/fgui/"));
+});
+
 gulp.task('buildDts', function () {
     return new Promise(function (resolve, reject) {
         dts.bundle({ name: "fgui", main: "./build/FairyGUI.d.ts", out: "../dist/fairygui.d.ts" });
+        resolve();
+    });
+})
+
+gulp.task('buildDtsClient', function () {
+    return new Promise(function (resolve, reject) {
+        dts.bundle({ name: "fgui", main: "./build/FairyGUI.d.ts", out: "../../../../mini_client/trunk/client_dev/assets/libs/fgui/fairygui.d.ts" });
         resolve();
     });
 })
@@ -52,5 +66,7 @@ gulp.task('build', gulp.series(
     'buildJs',
     'rollup',
     'uglify',
-    'buildDts'
+    'buildDts',
+    'uglifyClient',
+    'buildDtsClient'
 ))

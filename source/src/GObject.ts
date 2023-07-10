@@ -662,8 +662,8 @@ export class GObject {
     protected onDisable() {
     }
 
-    protected onUpdate() {
-    }
+    // protected onUpdate() {
+    // }
 
     protected onDestroy() {
     }
@@ -1162,9 +1162,9 @@ export class GObjectPartner extends Component {
             this.node.emit(FUIEvent.UNDISPLAY);
     }
 
-    protected update(dt: number) {
-        (<any>this.node)["$gobj"].onUpdate(dt);
-    }
+    // protected update(dt: number) {
+    //     (<any>this.node)["$gobj"].onUpdate(dt);
+    // }
 
     protected onDestroy() {
         (<any>this.node)["$gobj"].onDestroy();

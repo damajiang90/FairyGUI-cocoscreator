@@ -152,7 +152,6 @@ export declare class GObject {
     dispose(): void;
     protected onEnable(): void;
     protected onDisable(): void;
-    protected onUpdate(): void;
     protected onDestroy(): void;
     onClick(listener: Function, target?: any): void;
     onceClick(listener: Function, target?: any): void;
@@ -201,7 +200,6 @@ export declare class GObjectPartner extends Component {
     onClickLink(evt: Event, text: string): void;
     protected onEnable(): void;
     protected onDisable(): void;
-    protected update(dt: number): void;
     protected onDestroy(): void;
 }
 export interface IGRoot {

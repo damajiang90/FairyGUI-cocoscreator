@@ -2981,8 +2981,8 @@ class GObject {
     }
     onDisable() {
     }
-    onUpdate() {
-    }
+    // protected onUpdate() {
+    // }
     onDestroy() {
     }
     onClick(listener, target) {
@@ -3387,9 +3387,9 @@ class GObjectPartner extends Component {
         if (this._emitDisplayEvents)
             this.node.emit(Event.UNDISPLAY);
     }
-    update(dt) {
-        this.node["$gobj"].onUpdate(dt);
-    }
+    // protected update(dt: number) {
+    //     (<any>this.node)["$gobj"].onUpdate(dt);
+    // }
     onDestroy() {
         this.node["$gobj"].onDestroy();
     }
