@@ -49,6 +49,9 @@ export class UIConfig {
     // Pixel offsets of finger to trigger scrolling.
     public static touchScrollSensitivity: number = 20;
 
+    //Default Gloader assetsBundle Name.
+    public static loaderAssetsBundleName:string;
+
     // Pixel offsets of finger to trigger dragging.
     public static touchDragSensitivity: number = 10;
 
@@ -67,11 +70,11 @@ export class UIConfig {
 }
 
 let _fontRegistry: { [index: string]: Font } = {};
-export function registerFont(name: string, font: Font | string, bundle?: AssetManager.Bundle): void {
+export function registerFont(name: string, font?: Font | string, bundle?: AssetManager.Bundle): void {
     if (font instanceof Font)
         _fontRegistry[name] = font;
     else {
-        (bundle || resources).load(name, Font, (err: Error | null, asset: Font) => {
+        (bundle || resources).load(font || name, Font, (err: Error | null, asset: Font) => {
             _fontRegistry[name] = asset;
         });
     }

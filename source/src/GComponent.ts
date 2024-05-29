@@ -14,7 +14,7 @@ import { Transition } from "./Transition";
 import { TranslationHelper } from "./TranslationHelper";
 import { UIConfig } from "./UIConfig";
 import { UIContentScaler } from "./UIContentScaler";
-import { Decls, IObjectFactoryType, UIPackage } from "./UIPackage";
+import { Decls, UIPackage } from "./UIPackage";
 import { ByteBuffer } from "./utils/ByteBuffer";
 
 export class GComponent extends GObject {
@@ -25,6 +25,8 @@ export class GComponent extends GObject {
     private _applyingController?: Controller;
     private _rectMask?: Mask;
     private _maskContent?: GObject;
+    private _invertedMask?: boolean = false;
+    private _containerUITrans: UITransform;
 
     protected _margin: Margin;
     protected _trackBounds: boolean;
@@ -39,7 +41,7 @@ export class GComponent extends GObject {
     public _container: Node;
     public _scrollPane?: ScrollPane;
     public _alignOffset: Vec2;
-    public _customMask?: Mask
+    public _customMask?: Mask;
 
     public constructor() {
         super();
@@ -53,7 +55,8 @@ export class GComponent extends GObject {
 
         this._container = new Node("Container");
         this._container.layer = UIConfig.defaultUILayer;
-        this._container.addComponent(UITransform).setAnchorPoint(0, 1);
+        this._containerUITrans = this._container.addComponent(UITransform);
+        this._containerUITrans.setAnchorPoint(0, 1);
         this._node.addChild(this._container);
     }
 
@@ -94,9 +97,9 @@ export class GComponent extends GObject {
 
     protected _childUserClassMap: Record<string, Constructor<GComponent>> = null;
     /**
-     * éœ€åœ¨æ„é€ å‡½æ•°å†…æ³¨å†ŒæŒ‡å®šå­ç»„ä»¶éœ€è¦è‡ªå®šä¹‰å®ç°ç±»
-     * @param childName æŒ‡å®šå®šå­ç»„ä»¶å
-     * @param userClass è‡ªå®šä¹‰å®ç°ç±»ï¼Œåº”æ˜¯GComponentå­ç±»
+     * ĞèÔÚ¹¹Ôìº¯ÊıÄÚ×¢²áÖ¸¶¨×Ó×é¼şĞèÒª×Ô¶¨ÒåÊµÏÖÀà
+     * @param childName Ö¸¶¨¶¨×Ó×é¼şÃû
+     * @param userClass ×Ô¶¨ÒåÊµÏÖÀà£¬Ó¦ÊÇGComponent×ÓÀà
      */
     public registerChildUserClass<T extends GComponent>(childName: string, userClass: Constructor<T>) {
         if (!this._childUserClassMap) {
@@ -118,9 +121,9 @@ export class GComponent extends GObject {
 
     protected _childListItemUserClassMap: Record<string, Constructor<GComponent>> = null;
     /**
-     * éœ€åœ¨æ„é€ å‡½æ•°å†…æ³¨å†ŒæŒ‡å®šå­åˆ—è¡¨ç”Ÿæˆiteméœ€è¦è‡ªå®šä¹‰å®ç°ç±»
-     * @param childListName æŒ‡å®šå®šå­åˆ—è¡¨å
-     * @param userClass è‡ªå®šä¹‰å®ç°ç±»ï¼Œåº”æ˜¯GComponentå­ç±»
+     * ĞèÔÚ¹¹Ôìº¯ÊıÄÚ×¢²áÖ¸¶¨×ÓÁĞ±íÉú³ÉitemĞèÒª×Ô¶¨ÒåÊµÏÖÀà
+     * @param childListName Ö¸¶¨¶¨×ÓÁĞ±íÃû
+     * @param userClass ×Ô¶¨ÒåÊµÏÖÀà£¬Ó¦ÊÇGComponent×ÓÀà
      */
     public registerListItemUserClass<T extends GComponent>(childListName: string, userClass: Constructor<T>) {
         if (!this._childListItemUserClassMap) {
@@ -147,7 +150,7 @@ export class GComponent extends GObject {
 
     public addChildAt(child: GObject, index: number): GObject {
         if (!child)
-            throw "child is null";
+            throw new Error("child is null");
 
         var numChildren: number = this._children.length;
 
@@ -181,7 +184,7 @@ export class GComponent extends GObject {
             return child;
         }
         else {
-            throw "Invalid child index";
+            throw new Error("Invalid child index");
         }
     }
 
@@ -231,7 +234,7 @@ export class GComponent extends GObject {
             return child;
         }
         else {
-            throw "Invalid child index";
+            throw new Error("Invalid child index");
         }
     }
 
@@ -250,7 +253,7 @@ export class GComponent extends GObject {
         if (index >= 0 && index < this.numChildren)
             return this._children[index] as T;
         else
-            throw "Invalid child index";
+            throw new Error("Invalid child index");
     }
 
     public getChild<T extends GObject>(name: string, classType?: Constructor<T>): T {
@@ -325,7 +328,7 @@ export class GComponent extends GObject {
     public setChildIndex(child: GObject, index: number): void {
         var oldIndex: number = this._children.indexOf(child);
         if (oldIndex == -1)
-            throw "Not a child of this container";
+            throw new Error("Not a child of this container");
 
         if (child.sortingOrder != 0) //no effect
             return;
@@ -342,7 +345,7 @@ export class GComponent extends GObject {
     public setChildIndexBefore(child: GObject, index: number): number {
         var oldIndex: number = this._children.indexOf(child);
         if (oldIndex == -1)
-            throw "Not a child of this container";
+            throw new Error("Not a child of this container");
 
         if (child.sortingOrder != 0) //no effect
             return oldIndex;
@@ -386,7 +389,7 @@ export class GComponent extends GObject {
         var index1: number = this._children.indexOf(child1);
         var index2: number = this._children.indexOf(child2);
         if (index1 == -1 || index2 == -1)
-            throw "Not a child of this container";
+            throw new Error("Not a child of this container");
         this.swapChildrenAt(index1, index2);
     }
 
@@ -440,7 +443,7 @@ export class GComponent extends GObject {
     public removeController(c: Controller): void {
         var index: number = this._controllers.indexOf(c);
         if (index == -1)
-            throw "controller not exists";
+            throw new Error("controller not exists");
 
         c.parent = null;
         this._controllers.splice(index, 1);
@@ -682,7 +685,7 @@ export class GComponent extends GObject {
             value.node.on(Node.EventType.SIZE_CHANGED, this.onMaskContentChanged, this);
             value.node.on(Node.EventType.ANCHOR_CHANGED, this.onMaskContentChanged, this);
 
-            this._customMask.inverted = inverted;
+            this._invertedMask = inverted;
             if (this._node.activeInHierarchy)
                 this.onMaskReady();
             else
@@ -713,7 +716,7 @@ export class GComponent extends GObject {
         this.off(FUIEvent.DISPLAY, this.onMaskReady, this);
 
         if (this._maskContent instanceof GImage) {
-            this._customMask.type = Mask.Type.GRAPHICS_STENCIL;
+            this._customMask.type = Mask.Type.SPRITE_STENCIL;
             this._customMask.alphaThreshold = 0.0001;
             this._customMask.spriteFrame = this._maskContent._content.spriteFrame;
         }
@@ -723,6 +726,8 @@ export class GComponent extends GObject {
             else
                 this._customMask.type = Mask.Type.GRAPHICS_RECT;
         }
+
+        this._customMask.inverted = this._invertedMask;
     }
 
     private onMaskContentChanged() {
@@ -793,7 +798,7 @@ export class GComponent extends GObject {
         if (this._scrollPane)
             this._scrollPane.onOwnerSizeChanged();
         else
-            this._container._uiProps.uiTransformComp.setContentSize(this.viewWidth, this.viewHeight);
+            this._containerUITrans.setContentSize(this.viewWidth, this.viewHeight);
     }
 
     protected handleGrayedChanged(): void {
@@ -835,7 +840,7 @@ export class GComponent extends GObject {
             s_vec2.x += this._container.position.x;
             s_vec2.y += this._container.position.y;
 
-            let clippingSize: Size = this._container._uiProps.uiTransformComp.contentSize;
+            let clippingSize: Size = this._containerUITrans.contentSize;
             if (s_vec2.x < 0 || s_vec2.y < 0 || s_vec2.x >= clippingSize.width || s_vec2.y >= clippingSize.height)
                 return null;
         }
@@ -1182,7 +1187,7 @@ export class GComponent extends GObject {
                         buffer.seek(curPos, 0);
                         buffer.skip(5);
                         const _ = buffer.readS();
-                        const _name = buffer.readS();//ä¸ºå®ç°ä»åç§°æ¥æ³¨å†Œuserclass
+                        const _name = buffer.readS();//ÎªÊµÏÖ´ÓÃû³ÆÀ´×¢²áuserclass
                         userClass = this.getChildUserClass(_name);
                     }
                     child = Decls.UIObjectFactory.newObject(pi, userClass);

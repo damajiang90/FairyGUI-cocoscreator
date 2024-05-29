@@ -1,4 +1,4 @@
-import { Size, view, screen } from "cc";
+import { Size, screen, view } from "cc";
 
 export class UIContentScaler {
     public static scaleFactor: number = 1;
@@ -7,7 +7,7 @@ export class UIContentScaler {
 }
 
 export function updateScaler(): void {
-    let size = screen.windowSize;//view.getCanvasSize();
+    let size = screen.windowSize;
     size.width /= view.getScaleX();
     size.height /= view.getScaleY();
     UIContentScaler.rootSize.set(size);

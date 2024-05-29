@@ -39,7 +39,7 @@ export class InputProcessor extends Component {
         node.on(Node.EventType.MOUSE_UP, this.mouseUpHandler, this);
         node.on(Node.EventType.MOUSE_WHEEL, this.mouseWheelHandler, this);
 
-        this._touchListener = this.node.eventProcessor.touchListener;
+        this._touchListener = (<any>this.node.eventProcessor).touchListener;
     }
 
     onDisable() {
