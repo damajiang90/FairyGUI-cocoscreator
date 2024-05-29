@@ -435,7 +435,7 @@ declare module 'fgui/GRoot' {
 }
 
 declare module 'fgui/GTextField' {
-    import { Color, Font, HorizontalTextAlignment, Label, LabelOutline, LabelShadow, Vec2, VerticalTextAlignment } from "cc";
+    import { Color, Font, HorizontalTextAlignment, Label, Vec2, VerticalTextAlignment } from "cc";
     import { AutoSizeType } from "fgui/FieldTypes";
     import { GComponent } from "fgui/GComponent";
     import { GObject } from "fgui/GObject";
@@ -458,8 +458,6 @@ declare module 'fgui/GTextField' {
         protected _autoSize: AutoSizeType;
         protected _updatingSize: boolean;
         protected _sizeDirty: boolean;
-        protected _outline?: LabelOutline;
-        protected _shadow?: LabelShadow;
         constructor();
         protected createRenderer(): void;
         set text(value: string | null);
@@ -608,6 +606,14 @@ declare module 'fgui/GLoader' {
         dispose(): void;
         get url(): string | null;
         set url(value: string | null);
+        /**
+          * 设置图片
+          * @param url
+          * @param bundleStr 远程包名称
+          */
+        setUrlWithBundle(url: string, bundleStr?: string): void;
+        set bundle(val: string);
+        get bundle(): string;
         get icon(): string | null;
         set icon(value: string | null);
         get align(): AlignType;
@@ -1346,7 +1352,7 @@ declare module 'fgui/ScrollPane' {
     import { GScrollBar } from "fgui/GScrollBar";
     import { ByteBuffer } from "fgui/utils/ByteBuffer";
     export class ScrollPane extends Component {
-        _displayInDemand?: boolean;
+        _displayInDemand: boolean;
         _loop: number;
         static draggingPane: ScrollPane;
         setup(buffer: ByteBuffer): void;
@@ -1779,6 +1785,7 @@ declare module 'fgui/UIConfig' {
         static tooltipsWin: string;
         static defaultComboBoxVisibleItemCount: number;
         static touchScrollSensitivity: number;
+        static loaderAssetsBundleName: string;
         static touchDragSensitivity: number;
         static clickDragSensitivity: number;
         static bringWindowToFrontOnClick: boolean;
@@ -1786,7 +1793,7 @@ declare module 'fgui/UIConfig' {
         static linkUnderline: boolean;
         static defaultUILayer: number;
     }
-    export function registerFont(name: string, font: Font | string, bundle?: AssetManager.Bundle): void;
+    export function registerFont(name: string, font?: Font | string, bundle?: AssetManager.Bundle): void;
     export function getFontByName(name: string): Font;
 }
 

@@ -97,9 +97,9 @@ export class GComponent extends GObject {
 
     protected _childUserClassMap: Record<string, Constructor<GComponent>> = null;
     /**
-     * ĞèÔÚ¹¹Ôìº¯ÊıÄÚ×¢²áÖ¸¶¨×Ó×é¼şĞèÒª×Ô¶¨ÒåÊµÏÖÀà
-     * @param childName Ö¸¶¨¶¨×Ó×é¼şÃû
-     * @param userClass ×Ô¶¨ÒåÊµÏÖÀà£¬Ó¦ÊÇGComponent×ÓÀà
+     * éœ€åœ¨æ„é€ å‡½æ•°å†…æ³¨å†ŒæŒ‡å®šå­ç»„ä»¶éœ€è¦è‡ªå®šä¹‰å®ç°ç±»
+     * @param childName æŒ‡å®šå®šå­ç»„ä»¶å
+     * @param userClass è‡ªå®šä¹‰å®ç°ç±»ï¼Œåº”æ˜¯GComponentå­ç±»
      */
     public registerChildUserClass<T extends GComponent>(childName: string, userClass: Constructor<T>) {
         if (!this._childUserClassMap) {
@@ -121,9 +121,9 @@ export class GComponent extends GObject {
 
     protected _childListItemUserClassMap: Record<string, Constructor<GComponent>> = null;
     /**
-     * ĞèÔÚ¹¹Ôìº¯ÊıÄÚ×¢²áÖ¸¶¨×ÓÁĞ±íÉú³ÉitemĞèÒª×Ô¶¨ÒåÊµÏÖÀà
-     * @param childListName Ö¸¶¨¶¨×ÓÁĞ±íÃû
-     * @param userClass ×Ô¶¨ÒåÊµÏÖÀà£¬Ó¦ÊÇGComponent×ÓÀà
+     * éœ€åœ¨æ„é€ å‡½æ•°å†…æ³¨å†ŒæŒ‡å®šå­åˆ—è¡¨ç”Ÿæˆiteméœ€è¦è‡ªå®šä¹‰å®ç°ç±»
+     * @param childListName æŒ‡å®šå®šå­åˆ—è¡¨å
+     * @param userClass è‡ªå®šä¹‰å®ç°ç±»ï¼Œåº”æ˜¯GComponentå­ç±»
      */
     public registerListItemUserClass<T extends GComponent>(childListName: string, userClass: Constructor<T>) {
         if (!this._childListItemUserClassMap) {
@@ -1187,7 +1187,7 @@ export class GComponent extends GObject {
                         buffer.seek(curPos, 0);
                         buffer.skip(5);
                         const _ = buffer.readS();
-                        const _name = buffer.readS();//ÎªÊµÏÖ´ÓÃû³ÆÀ´×¢²áuserclass
+                        const _name = buffer.readS();//ä¸ºå®ç°ä»åç§°æ¥æ³¨å†Œuserclass
                         userClass = this.getChildUserClass(_name);
                     }
                     child = Decls.UIObjectFactory.newObject(pi, userClass);

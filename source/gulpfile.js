@@ -42,7 +42,7 @@ gulp.task("uglifyClient", function () {
     return gulp.src("dist/fairygui.mjs")
         .pipe(rename({ suffix: '.min' }))
         .pipe(uglify(/* options */))
-        .pipe(gulp.dest("../../../mini_client/trunk/client_dev/assets/libs/fgui/"));
+        .pipe(gulp.dest("../../../mini_client/trunk/client_dev/assets/lib/fgui/"));
 });
 
 gulp.task('buildDts', function () {
@@ -54,7 +54,7 @@ gulp.task('buildDts', function () {
 
 gulp.task('buildDtsClient', function () {
     return new Promise(function (resolve, reject) {
-        dts.bundle({ name: "fgui", main: "./build/FairyGUI.d.ts", out: "../../../../mini_client/trunk/client_dev/assets/libs/fgui/fairygui.d.ts" });
+        dts.bundle({ name: "fgui", main: "./build/FairyGUI.d.ts", out: "../../../../mini_client/trunk/client_dev/assets/lib/fgui/fairygui.d.ts" });
         resolve();
     });
 })
